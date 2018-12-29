@@ -21,7 +21,7 @@ server <- function(input, output) {
     range[2] - range[1] + 1
   })
   clusteringPlotHeight <- reactive({
-    300 * (clusteringPlotCount() / 3)
+    300 * ceiling(clusteringPlotCount() / 3)
   })
   output$clusteringPlotRender <- renderPlot({
     if (input$method == 'kmeans') {
@@ -44,7 +44,7 @@ server <- function(input, output) {
     length(input$criteria)
   })
   validationPlotHeight <- reactive({
-    300 * (validationPlotCount() / 3)
+    300 * ceiling(validationPlotCount() / 3)
   })
   output$validationPlotRender <- renderPlot({
     plots <- run_validation(data, values$clusterings, input$criteria, input$method)
