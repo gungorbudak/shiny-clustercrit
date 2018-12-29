@@ -4,9 +4,14 @@ source('src/server/validation.R')
 
 server <- function(input, output) {
 
-  data <- as.data.frame(rbind(matrix(rnorm(100, mean = 0, sd = 0.5), ncol = 2),
-                              matrix(rnorm(100, mean = 3, sd = 0.5), ncol = 2),
-                              matrix(rnorm(100, mean = 6, sd = 0.5), ncol = 2)))
+  data <- as.data.frame(rbind(
+      matrix(rnorm(500, mean = 0, sd = 0.05), ncol = 5),
+      matrix(rnorm(500, mean = 1, sd = 0.05), ncol = 5),
+      matrix(rnorm(500, mean = 2, sd = 0.05), ncol = 5),
+      matrix(rnorm(500, mean = 3, sd = 0.05), ncol = 5),
+      matrix(rnorm(500, mean = 4, sd = 0.05), ncol = 5),
+      matrix(rnorm(500, mean = 5, sd = 0.05), ncol = 5)
+  ))
   values <- reactiveValues()
 
   # output$clusteringPlot <- renderPlot({

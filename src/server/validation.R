@@ -1,5 +1,5 @@
-require(ggplot2)
-require(clusterCrit)
+require('ggplot2')
+require('clusterCrit')
 source('src/utilities.R')
 
 run_validation <- function(data, clusterings, criteria) {

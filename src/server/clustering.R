@@ -1,11 +1,11 @@
-require(gridExtra)
-require(factoextra)
+require('gridExtra')
+require('factoextra')
 source('src/utilities.R')
 
 cls_kmeans <- function(data, range) {
     range <- c(range[1]:range[2])
     clusterings <- vector("list", length(range))
-    params = list(x = data, nstart = 1, iter.max = 100)
+    params = list(x = data, nstart = 25, iter.max = 100)
     for (i in 1:length(range)) {
         params$centers = range[i]
         clustering <- do.call(kmeans, params)
