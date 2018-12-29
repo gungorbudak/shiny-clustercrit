@@ -21,7 +21,7 @@ run_validation <- function(data, clusterings, criteria, method) {
         best_k <- bestCriterion(pdata.y[[criteria[i]]], criteria[i]) + 1
         plot <- ggplot(data=pdata, aes(x=k, y=value, group=1)) +
             geom_line(color="blue") + geom_point(color="blue") +
-            ggtitle(paste0(method, " - ", criteria[i])) +
+            ggtitle(paste0(method, " / ", criteria[i])) +
             geom_point(data=pdata[pdata$k == best_k, ], pch = 21, fill = NA, size = 5,
                        color = "green3", stroke = 2) +
             scale_x_discrete(limits=pdata$k)

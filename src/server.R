@@ -23,10 +23,11 @@ server <- function(input, output) {
   clusteringPlotHeight <- reactive({
     300 * (clusteringPlotCount() / 3)
   })
-
   output$clusteringPlotRender <- renderPlot({
     if (input$method == 'kmeans') {
       clusterings <- cls_kmeans(data, input$range)
+    } else if (input$method == 'pam') {
+      clusterings <- cls_pam(data, input$range)
     } else if (input$method == 'hclust') {
       clusterings <- cls_hclust(data, input$range)
     }
@@ -45,7 +46,6 @@ server <- function(input, output) {
   validationPlotHeight <- reactive({
     300 * (validationPlotCount() / 3)
   })
-
   output$validationPlotRender <- renderPlot({
     plots <- run_validation(data, values$clusterings, input$criteria, input$method)
     do.call(grid.arrange, plots)

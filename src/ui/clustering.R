@@ -5,8 +5,8 @@ clusteringUi <- fluidPage(
       column(6, selectInput(
                            "method",
                            "Choose a method:",
-                            choices = c("kmeans", "hclust"),
-                            width = '100%'
+                            choices = c("kmeans", "pam", "hclust"),
+                            width = "100%"
                             )
       ),
       column(6, sliderInput(
@@ -15,7 +15,7 @@ clusteringUi <- fluidPage(
                             min = 2,
                             max = 100,
                             value = c(2, 7),
-                            width = '100%'
+                            width = "100%"
                             )
       )
     ),
