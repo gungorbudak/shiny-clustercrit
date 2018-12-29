@@ -12,28 +12,46 @@ server <- function(input, output) {
       matrix(rnorm(500, mean = 4, sd = 0.05), ncol = 5),
       matrix(rnorm(500, mean = 5, sd = 0.05), ncol = 5)
   ))
+
   values <- reactiveValues()
 
-  # output$clusteringPlot <- renderPlot({
-  #     do.call(grid.arrange, run_clustering(data, input$method, input$range))
-  #   })
+  clusteringPlotCount <- reactive({
+    req(input$range)
+    range <- input$range
+    range[2] - range[1] + 1
+  })
+  clusteringPlotHeight <- reactive({
+    300 * (clusteringPlotCount() / 3)
+  })
 
-  output$clusteringPlot <- renderPlot({
+  output$clusteringPlotRender <- renderPlot({
     if (input$method == 'kmeans') {
       clusterings <- cls_kmeans(data, input$range)
     } else if (input$method == 'hclust') {
       clusterings <- cls_hclust(data, input$range)
     }
     values$clusterings <- clusterings
-    plots <- plt_any(data, clusterings)
-
+    plots <- plt_any(data, clusterings, input$method)
     do.call(grid.arrange, plots)
   })
+  output$clusteringPlot <- renderUI({
+    plotOutput("clusteringPlotRender", height = clusteringPlotHeight())
+  })
 
-  output$validationPlot <- renderPlot({
-    plots <- run_validation(data, values$clusterings, input$criteria)
+  validationPlotCount <- reactive({
+    req(input$criteria)
+    length(input$criteria)
+  })
+  validationPlotHeight <- reactive({
+    300 * (validationPlotCount() / 3)
+  })
 
+  output$validationPlotRender <- renderPlot({
+    plots <- run_validation(data, values$clusterings, input$criteria, input$method)
     do.call(grid.arrange, plots)
+  })
+  output$validationPlot <- renderUI({
+    plotOutput("validationPlotRender", height = validationPlotHeight())
   })
 
 }

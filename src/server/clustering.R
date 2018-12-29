@@ -25,34 +25,14 @@ cls_hclust <- function(data, range) {
     return(clusterings)
 }
 
-plt_any <- function(data, clusterings) {
+plt_any <- function(data, clusterings, method) {
     plots <- vector("list", length(clusterings))
     for (i in 1:length(clusterings)) {
         k <- get_k(clusterings[[i]])
         plot <- fviz_cluster(clusterings[[i]], geom = "point", data = data) +
-                ggtitle(paste0("k = ", k))
+                ggtitle(paste0(method, " - k = ", k))
         plots[i] <- list(plot)
     }
     plots$ncol = 3
     return(plots)
-}
-
-run_kmeans <- function(data, range) {
-    clusterings <- cls_kmeans(data, range)
-    plots <- plt_any(data, clusterings)
-    return(plots)
-}
-
-run_hclust <- function(data, range) {
-    clusterings <- cls_hclust(data, range)
-    plots <- plt_any(data, clusterings)
-    return(plots)
-}
-
-run_clustering <- function(data, method, range) {
-    if (method == 'kmeans') {
-        return(run_kmeans(data, range))
-    } else if (method == 'hclust') {
-        return(run_hclust(data, range))
-    }
 }

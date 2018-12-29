@@ -1,4 +1,4 @@
-require(clusterCrit)
+require('clusterCrit')
 
 validationUi <- fluidPage(
   verticalLayout(
@@ -8,13 +8,14 @@ validationUi <- fluidPage(
                              "criteria",
                              "Choose criteria:",
                              choices = getCriteriaNames(TRUE),
-                             selected = c("Davies_Bouldin", "Dunn"),
-                             multiple = TRUE
+                             selected = c("Davies_Bouldin", "Dunn", "Calinski_Harabasz"),
+                             multiple = TRUE,
+                             width = '100%'
                              )
       )
     ),
     fluidRow(
-      column(12, plotOutput("validationPlot"))
+      column(12, uiOutput("validationPlot"))
     )
   )
 )
