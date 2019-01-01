@@ -3,7 +3,7 @@ get_k <- function(clustering) {
         return(nrow(clustering$centers))
     } else if (class(clustering)[1] == "pam") {
         return(nrow(clustering$medoids))
-    } else if (class(clustering)[1] == "hclust") {
+    } else if (class(clustering)[length(class(clustering))] == "hcut") {
         return(clustering$nbclust)
     }
 }

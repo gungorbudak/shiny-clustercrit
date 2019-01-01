@@ -3,35 +3,36 @@ require('factoextra')
 require('cluster')
 source('src/utilities.R')
 
-cls_kmeans <- function(data, range) {
+cls_kmeans <- function(data, range, params) {
     range <- c(range[1]:range[2])
     clusterings <- vector("list", length(range))
-    params = list(x = data, nstart = 25, iter.max = 100)
+    params$x <- data
     for (i in 1:length(range)) {
-        params$centers = range[i]
+        params$centers <- range[i]
         clustering <- do.call(kmeans, params)
         clusterings[i] <- list(clustering)
     }
     return(clusterings)
 }
 
-cls_pam <- function(data, range) {
+cls_pam <- function(data, range, params) {
     range <- c(range[1]:range[2])
     clusterings <- vector("list", length(range))
-    params = list(x = data)
+    params$x <- data
     for (i in 1:length(range)) {
-        params$k = range[i]
+        params$k <- range[i]
         clustering <- do.call(pam, params)
         clusterings[i] <- list(clustering)
     }
     return(clusterings)
 }
 
-cls_hclust <- function(data, range) {
+cls_hcut <- function(data, range, params) {
     range <- c(range[1]:range[2])
     clusterings <- vector("list", length(range))
+    params$x <- data
     for (i in 1:length(range)) {
-        params = list(data, k = range[i])
+        params$k <- range[i]
         clustering <- do.call(hcut, params)
         clusterings[i] <- list(clustering)
     }
