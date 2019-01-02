@@ -4,6 +4,7 @@ source('src/ui/validation.R')
 
 ui <- verticalLayout(
   tags$head(
+    tags$link(rel = "shortcut icon", type = "image/png", href = "OptimalClustersLogo.png"),
     tags$style(
       "h2 { margin-bottom: 20px; }
       .footer { margin-bottom: 20px; }"
@@ -16,7 +17,7 @@ ui <- verticalLayout(
     tabPanel("Validation", validationUi),
     fluid = FALSE,
     position = "static-top",
-    windowTitle = "OptimalClusters"
+    windowTitle = "OptimalClusters - a web app to determine optimal number of clusters"
   ),
   fixedPage(
     hr(),
