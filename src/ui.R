@@ -10,16 +10,16 @@ ui <- verticalLayout(
     )
   ),
   navbarPage(
-    "Shiny clusterCrit",
+    "OptimalClusters",
     tabPanel("Data", dataUi),
     tabPanel("Clustering", clusteringUi),
     tabPanel("Validation", validationUi),
     position = "static-top",
-    windowTitle = "Shiny clusterCrit"
+    windowTitle = "OptimalClusters"
   ),
   fluidPage(
     hr(),
-    div(p("Shiny clusterCrit is a web app to determine optimal number of clusters."),
+    div(p("OptimalClusters is a web app to determine optimal number of clusters."),
       class = "footer text-muted text-center")
   )
 )
