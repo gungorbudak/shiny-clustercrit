@@ -10,6 +10,8 @@ git clone https://github.com/gungorbudak/shiny-optimalclusters.git
 
 # make a config.R file and add TOKEN and SECRET variables
 # as shown below
+# ACCOUNT_NAME <- 'optimalclusters'
+# APP_NAME <- 'home'
 # TOKEN <- '<TOKEN from shinyapps.io>'
 # SECRET <- '<SECRET from shinyapps.io>'
 
