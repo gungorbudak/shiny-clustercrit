@@ -14,10 +14,11 @@ ui <- verticalLayout(
     tabPanel("Data", dataUi),
     tabPanel("Clustering", clusteringUi),
     tabPanel("Validation", validationUi),
+    fluid = FALSE,
     position = "static-top",
     windowTitle = "OptimalClusters"
   ),
-  fluidPage(
+  fixedPage(
     hr(),
     div(p("OptimalClusters is a web app to determine optimal number of clusters."),
       class = "footer text-muted text-center")

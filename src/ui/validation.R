@@ -1,9 +1,9 @@
 require('clusterCrit')
 
-validationUi <- fluidPage(
+validationUi <- fixedPage(
   verticalLayout(
     titlePanel("Validation"),
-    fluidRow(
+    fixedRow(
       column(12, 
         selectInput(
           "criteria",
@@ -15,7 +15,7 @@ validationUi <- fluidPage(
         )
       )
     ),
-    fluidRow(
+    fixedRow(
       column(12, h3("Plots"), uiOutput("validationPlot"))
     )
   )

@@ -15,9 +15,9 @@ optionsUi <- verticalLayout(
             h3("pam options"),
             flowLayout(
                 selectInput("metric", "Metric", choices = c("euclidean", "manhattan"), selected = "euclidean"),
-                radioButtons("stand", "Standardize", choices = c(TRUE, FALSE), selected = FALSE),
-                radioButtons("do.swap", "Do swap", choices = c(TRUE, FALSE), selected = FALSE),
-                radioButtons("pamonce", "pamonce", choices = c(0, 1, 2), selected = 0)
+                selectInput("stand", "Standardize", choices = c(TRUE, FALSE), selected = FALSE),
+                selectInput("do.swap", "Do swap", choices = c(TRUE, FALSE), selected = FALSE),
+                selectInput("pamonce", "pamonce", choices = c(0, 1, 2), selected = 0)
                 )
             ),
             a("Learn more about pam on RDocumentation.", href = "https://www.rdocumentation.org/packages/cluster/versions/2.0.7-1/topics/pam", target = "_blank")
@@ -29,7 +29,7 @@ optionsUi <- verticalLayout(
                 selectInput("hc_func", "Function", choices = c("hclust", "agnes", "diana"), selected = "hclust"),
                 selectInput("hc_method", "Method", choices = c("ward.D", "ward.D", "single", "complete", "average", "mcquitty", "median", "centroid"), selected = "complete"),
                 selectInput("hc_metric", "Metric", choices = c("euclidean", "manhattan", "maximum", "canberra", "binary", "minkowski", "pearson", "spearman", "kendall"), selected = "hclust"),
-                radioButtons("stand", "Standardize", choices = c(TRUE, FALSE), selected = FALSE)
+                selectInput("stand", "Standardize", choices = c(TRUE, FALSE), selected = FALSE)
                 ),
             a("Learn more about hcut on RDocumentation.", href = "https://www.rdocumentation.org/packages/factoextra/versions/1.0.5/topics/hcut", target = "_blank")
             )
@@ -37,16 +37,17 @@ optionsUi <- verticalLayout(
     )
 
 
-clusteringUi <- fluidPage(
+clusteringUi <- fixedPage(
   verticalLayout(
     titlePanel("Clustering"),
-    fluidRow(
+    fixedRow(
       column(4,
         selectInput(
           "method",
           "Method",
           choices = c("kmeans", "pam", "hcut"),
-          selected = "kmeans"
+          selected = "kmeans",
+          width = "100%"
         )
       ),
       column(8,
@@ -56,14 +57,14 @@ clusteringUi <- fluidPage(
           min = 2,
           max = 100,
           value = c(2, 7),
-          width = "600px"
+          width = "100%"
         )
       )
     ),
-    fluidRow(
+    fixedRow(
       column(12, optionsUi)
     ),
-    fluidRow(
+    fixedRow(
       column(12, h3("Plots"), uiOutput("clusteringPlot"))
     )
   )

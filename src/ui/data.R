@@ -1,4 +1,4 @@
-dataUi <- fluidPage(
+dataUi <- fixedPage(
   verticalLayout(
     titlePanel("Data")
   )
