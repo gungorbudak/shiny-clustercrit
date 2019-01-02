@@ -7,7 +7,8 @@ ui <- verticalLayout(
     tags$link(rel = "shortcut icon", type = "image/png", href = "OptimalClustersLogo.png"),
     tags$style(
       "h2 { margin-bottom: 20px; }
-      .footer { margin-bottom: 20px; }"
+      .half-rule { width: 200px; height: 1px; margin: 20px auto; background-color: #eee; border: 0; }
+      .footer { margin: 40px 0px; }"
     )
   ),
   navbarPage(

@@ -7,14 +7,62 @@ server <- function(input, output, session) {
   values <- reactiveValues()
 
   # Data operations
-  data <- as.data.frame(rbind(
-      matrix(rnorm(500, mean = 0, sd = 0.05), ncol = 5),
-      matrix(rnorm(500, mean = 1, sd = 0.05), ncol = 5),
-      matrix(rnorm(500, mean = 2, sd = 0.05), ncol = 5),
-      matrix(rnorm(500, mean = 3, sd = 0.05), ncol = 5),
-      matrix(rnorm(500, mean = 4, sd = 0.05), ncol = 5),
-      matrix(rnorm(500, mean = 5, sd = 0.05), ncol = 5)
-  ))
+  output$dataOptionsSelectColumnUi <- renderUI({
+    if (is.null(values$original_data) || (is.null(input$input_file) && input$data_mode == 'Upload'))
+      return()
+    colnames <- names(values$original_data)
+        selectInput(
+      "columns",
+      "Columns", 
+      choices  = colnames,
+      selected = colnames,
+      multiple = TRUE,
+      width = "100%"
+    )
+  })
+  
+  output$dataDisplay <- renderTable({
+    if (input$data_mode == 'Upload') {
+      req(input$input_file)
+      tryCatch(
+        {
+          values$original_data <- read.csv(
+            input$input_file$datapath,
+            header = input$header,
+            sep = input$separator_type,
+            quote = input$quote_type
+          )
+        },
+        error = function(e) {
+          stop(safeError(e))
+        }
+      )
+    } else {
+      req(input$dataset)
+      values$original_data <- switch(input$dataset,
+        "rock" = rock,
+        "pressure" = pressure,
+        "cars" = cars,
+        "iris" = iris
+      )
+    }
+    
+    if(!is.null(input$columns) && input$columns %in% names(values$original_data)) {
+      values$subset_data <- values$original_data[, input$columns]
+    } else {
+      values$subset_data <- values$original_data
+    }
+    values$processed_data <- data_preprocess(
+      values$subset_data,
+      input$fill_missing,
+      input$scale,
+      input$centralize,
+      input$normalize,
+      input$reduce_dimension
+      )
+    data_show(values$processed_data, input$display_option)
+  }, width = "100%")
+
 
   # Clustering operations
 
@@ -44,7 +92,7 @@ server <- function(input, output, session) {
         nstart = input$nstart,
         algorithm = input$algorithm
         )
-      values$clusterings <- cls_kmeans(data, input$range, params)
+      values$clusterings <- cls_kmeans(values$processed_data, input$range, params)
     } else if (input$method == 'pam') {
       params = list(
         metric = input$metric,
@@ -52,7 +100,7 @@ server <- function(input, output, session) {
         do.swap = input$do.swap,
         pamonce = input$pamonce
         )
-      values$clusterings <- cls_pam(data, input$range, params)
+      values$clusterings <- cls_pam(values$processed_data, input$range, params)
     } else if (input$method == 'hcut') {
       params = list(
         hc_func = input$hc_func,
@@ -60,11 +108,11 @@ server <- function(input, output, session) {
         hc_metric = input$hc_metric,
         stand = input$stand
         )
-      values$clusterings <- cls_hcut(data, input$range, params)
+      values$clusterings <- cls_hcut(values$processed_data, input$range, params)
     }
 
     ### Generate plot for each clustering
-    plots <- plt_any(data, values$clusterings, input$method)
+    plots <- plt_any(values$processed_data, values$clusterings, input$method)
 
     ### Fake the progress
     for (i in 1:10) {
@@ -102,7 +150,7 @@ server <- function(input, output, session) {
                  detail = 'This may take a while...')
 
     ### Generate plot for each criterion
-    plots <- run_validation(data, values$clusterings, input$criteria, input$method)
+    plots <- run_validation(values$processed_data, values$clusterings, input$criteria, input$method)
 
     ### Fake the progress
     for (i in 1:10) {

@@ -1,4 +1,4 @@
-optionsUi <- verticalLayout(
+clusteringOptionsUi <- verticalLayout(
     conditionalPanel(condition = "input.method == 'kmeans'",
         verticalLayout(
             h3("kmeans options"),
@@ -37,35 +37,34 @@ optionsUi <- verticalLayout(
     )
 
 
-clusteringUi <- fixedPage(
-  verticalLayout(
-    titlePanel("Clustering"),
-    fixedRow(
-      column(4,
-        selectInput(
-          "method",
-          "Method",
-          choices = c("kmeans", "pam", "hcut"),
-          selected = "kmeans",
-          width = "100%"
-        )
-      ),
-      column(8,
-        sliderInput(
-          "range",
-          "Number of clusters",
-          min = 2,
-          max = 100,
-          value = c(2, 7),
-          width = "100%"
-        )
+clusteringUi <- verticalLayout(
+  titlePanel("Clustering"),
+  fixedRow(
+    column(4,
+      selectInput(
+        "method",
+        "Method",
+        choices = c("K-Means" = "kmeans", "Partitioning Around Medoids" = "pam", "Hierarchical" = "hcut"),
+        selected = "kmeans",
+        width = "100%"
       )
     ),
-    fixedRow(
-      column(12, optionsUi)
-    ),
-    fixedRow(
-      column(12, h3("Plots"), uiOutput("clusteringPlot"))
+    column(8,
+      sliderInput(
+        "range",
+        "Number of clusters",
+        min = 2,
+        max = 100,
+        value = c(2, 7),
+        width = "100%"
+      )
     )
+  ),
+  fixedRow(
+    column(12, clusteringOptionsUi)
+  ),
+  hr(class="half-rule"),
+  fixedRow(
+    column(12, h3("Plots"), uiOutput("clusteringPlot"))
   )
 )
