@@ -2,7 +2,7 @@ source('src/server/data.R')
 source('src/server/clustering.R')
 source('src/server/validation.R')
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   # A reactive variable to store some data
   values <- reactiveValues()
 
@@ -30,6 +30,14 @@ server <- function(input, output) {
 
   ## Render plots
   output$clusteringPlotRender <- renderPlot({
+
+    ### Start progress
+    progress <- Progress$new(session, min=1, max=10)
+    on.exit(progress$close())
+    progress$set(message = 'Clustering is in progress',
+                 detail = 'This may take a while...')
+
+    ### Do actual clustering
     if (input$method == 'kmeans') {
       params = list(
         iter.max = input$iter.max,
@@ -54,7 +62,17 @@ server <- function(input, output) {
         )
       values$clusterings <- cls_hcut(data, input$range, params)
     }
+
+    ### Generate plot for each clustering
     plots <- plt_any(data, values$clusterings, input$method)
+
+    ### Fake the progress
+    for (i in 1:10) {
+      progress$set(value = i)
+      Sys.sleep(0.01)
+    }
+
+    ### Draw on the page
     do.call(grid.arrange, plots)
   })
 
@@ -76,7 +94,23 @@ server <- function(input, output) {
 
   ## Render plots
   output$validationPlotRender <- renderPlot({
+
+    ### Start progress
+    progress <- Progress$new(session, min=1, max=10)
+    on.exit(progress$close())
+    progress$set(message = 'Validation is in progress',
+                 detail = 'This may take a while...')
+
+    ### Generate plot for each criterion
     plots <- run_validation(data, values$clusterings, input$criteria, input$method)
+
+    ### Fake the progress
+    for (i in 1:10) {
+      progress$set(value = i)
+      Sys.sleep(0.01)
+    }
+
+    ### Draw on the page
     do.call(grid.arrange, plots)
   })
 
