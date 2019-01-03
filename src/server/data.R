@@ -25,7 +25,7 @@ best_variables <- function(pca_obj, cutoff = 0.9) {
             break
         }
     }
-    return(pca_obj$x[, 1:i, drop = FALSE])
+    return(pca_obj$x[, 1:max(c(i, 2)), drop = FALSE])
 }
 
 data_preprocess <- function(data, fill_missing, scale, centralize, normalize, reduce_dimension) {
