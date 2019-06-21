@@ -2,7 +2,7 @@ dataOptionsModeSelectionUi <- selectInput(
   "data_mode",
   "Mode",
   choices = c("Upload", "Select"),
-  selected = "Upload",
+  selected = "Select",
   width = "100%"
 )
 
@@ -48,19 +48,30 @@ dataOptionsSelectUi <- selectInput(
 dataOptionsModeUi <- verticalLayout(
   conditionalPanel(
     condition = "input.data_mode == 'Upload'",
-    verticalLayout(dataOptionsUploadUi, dataOptionsUploadOptionsUi)
+    verticalLayout(
+      fixedRow(
+        column(4, dataOptionsUploadUi),
+        column(8, dataOptionsUploadOptionsUi)
+      )
+    )
   ),
   conditionalPanel(
     condition = "input.data_mode == 'Select'",
-    verticalLayout(dataOptionsSelectUi)
+    verticalLayout(
+      fixedRow(
+        column(4, dataOptionsSelectUi),
+        column(8, uiOutput("dataOptionsSelectColumnUi"))
+      )
+    )
   )
 )
 
 dataOptionsUi <- verticalLayout(
   fixedRow(
-    column(2, dataOptionsModeSelectionUi),
-    column(5, dataOptionsModeUi),
-    column(5, uiOutput("dataOptionsSelectColumnUi"))
+    column(12, dataOptionsModeSelectionUi)
+  ),
+  fixedRow(
+    column(12, dataOptionsModeUi)
   )
 )
 
@@ -105,13 +116,14 @@ dataOptionsDisplayOptionsUi <- selectInput(
   "display_option",
   "Display Option",
   choices = c("All" = "all", "Head" = "head", "Tail" = 'tail', "Summary" = "summary"),
-  selected = 'head'
+  selected = "head",
+  width = "100%"
 )
 
 dataUi <- verticalLayout(
   titlePanel("Data"),
   fixedRow(
-    column(12, dataOptionsUi)
+    column(12, h3("Options"), dataOptionsUi)
   ),
   hr(class="half-rule"),
   fixedRow(
